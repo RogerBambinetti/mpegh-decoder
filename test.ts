@@ -5,13 +5,12 @@ import path from 'path';
 async function init(): Promise<void> {
     const files: string[] = fs.readdirSync('./files');
 
-    const promises: Promise<string>[] = files.map(file => {
-        const inputFilePath: string = `./files/${file}`;
-        const outputFilePath: string = `./output/${file.replace(path.extname(file), '.wav')}`;
-        return mpeghdecode.decode({ input: inputFilePath, output: outputFilePath }, { cicp: '10' });
-    });
+    const test = files.map(file => ({
+        input: `./files/${file}`,
+        output: `./output/${file.replace(path.extname(file), '.wav')}`
+    }));
 
-    await Promise.all(promises);
+    await mpeghdecode.bulkDecode(test)
 
     console.log('Terminou');
 }
