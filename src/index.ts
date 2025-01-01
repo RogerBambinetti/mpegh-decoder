@@ -16,23 +16,21 @@ interface Options {
     cicp?: string;
 }
 
-const mpeghdecode = {
-    decode: async (IO: IO, options: Options): Promise<string> => {
-        try {
-            const args = ['-if', IO.input, '-of', IO.output];
+const mpeghdecode = async (IO: IO, options: Options): Promise<string> => {
+    try {
+        const args = ['-if', IO.input, '-of', IO.output];
 
-            if (options.cicp) {
-                args.push('-tl');
-                args.push(options.cicp);
-            }
-
-            const { stdout } = await execFilePromise(paths[process.platform], args);
-
-            return stdout;
-        } catch (error) {
-            console.error(error);
-            throw error;
+        if (options.cicp) {
+            args.push('-tl');
+            args.push(options.cicp);
         }
+
+        const { stdout } = await execFilePromise(paths[process.platform], args);
+
+        return stdout;
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 };
 
