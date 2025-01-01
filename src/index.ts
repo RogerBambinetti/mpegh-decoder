@@ -17,11 +17,11 @@ interface Options {
 }
 
 const mpeghdecode = {
-    decode: async (IO: IO, options: Options): Promise<string> => {
+    decode: async (IO: IO, options?: Options): Promise<string> => {
         try {
             const args = ['-if', IO.input, '-of', IO.output];
 
-            if (options.cicp) {
+            if (options?.cicp) {
                 args.push('-tl');
                 args.push(options.cicp);
             }
@@ -34,7 +34,7 @@ const mpeghdecode = {
             throw error;
         }
     },
-    bulkDecode: async (IO: IO[], options: Options): Promise<string[]> => {
+    bulkDecode: async (IO: IO[], options?: Options): Promise<string[]> => {
         const promises: Promise<string>[] = IO.map(io => mpeghdecode.decode(io, options));
         return await Promise.all(promises);
     }
