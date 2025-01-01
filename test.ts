@@ -8,7 +8,7 @@ async function init(): Promise<void> {
     const promises: Promise<string>[] = files.map(file => {
         const inputFilePath: string = `./files/${file}`;
         const outputFilePath: string = `./output/${file.replace(path.extname(file), '.wav')}`;
-        return mpeghdecode({ input: inputFilePath, output: outputFilePath }, { cicp: '10' });
+        return mpeghdecode.decode({ input: inputFilePath, output: outputFilePath }, { cicp: '10' });
     });
 
     await Promise.all(promises);
