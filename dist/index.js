@@ -66,6 +66,9 @@ var mpeghDecoder = {
         if (!paths[process.platform]) {
           throw new PlatformNotSupported();
         }
+        if (!IO.output) {
+          IO.output = IO.input.replace(import_node_path.default.extname(IO.input), ".wav");
+        }
         const args = ["-if", IO.input, "-of", IO.output];
         if (options == null ? void 0 : options.cicp) {
           args.push("-tl");

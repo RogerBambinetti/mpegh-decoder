@@ -57,6 +57,9 @@ var require_index = __commonJS({
             if (!paths[process.platform]) {
               throw new PlatformNotSupported();
             }
+            if (!IO.output) {
+              IO.output = IO.input.replace(path.extname(IO.input), ".wav");
+            }
             const args = ["-if", IO.input, "-of", IO.output];
             if (options == null ? void 0 : options.cicp) {
               args.push("-tl");

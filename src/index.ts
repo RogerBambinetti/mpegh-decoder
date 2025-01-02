@@ -7,7 +7,7 @@ const execFilePromise = promisify(execFile);
 
 interface IO {
     input: string;
-    output: string;
+    output?: string;
 }
 
 interface Options {
@@ -23,6 +23,10 @@ const mpeghDecoder = {
         try {
             if (!paths[process.platform]) {
                 throw new PlatformNotSupported();
+            }
+
+            if (!IO.output) {
+                IO.output = IO.input.replace(path.extname(IO.input), '.wav');
             }
 
             const args = ['-if', IO.input, '-of', IO.output];
