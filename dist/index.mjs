@@ -40,6 +40,7 @@ var init_Errors = __esm({
 });
 
 // src/index.ts
+import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 var require_index = __commonJS({
@@ -61,7 +62,7 @@ var require_index = __commonJS({
               args.push("-tl");
               args.push(options.cicp);
             }
-            const { stdout } = yield execFilePromise(paths[process.platform], args);
+            const { stdout } = yield execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
             return stdout;
           } catch (error) {
             throw error;

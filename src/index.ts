@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { PlatformNotSupported } from './error/Errors';
@@ -31,7 +32,7 @@ const mpeghDecoder = {
                 args.push(options.cicp);
             }
 
-            const { stdout } = await execFilePromise(paths[process.platform], args);
+            const { stdout } = await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
 
             return stdout;
         } catch (error) {
