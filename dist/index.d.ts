@@ -10,4 +10,4 @@ declare const mpeghdecode: {
     bulkDecode: (IO: IO[], options?: Options) => Promise<string[]>;
 };
 
-export { mpeghdecode as default };
+export { mpeghdecode };

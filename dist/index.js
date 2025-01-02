@@ -40,7 +40,7 @@ var __async = (__this, __arguments, generator) => {
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  default: () => index_default
+  mpeghdecode: () => mpeghdecode
 });
 module.exports = __toCommonJS(index_exports);
 var import_node_child_process = require("child_process");
@@ -56,7 +56,7 @@ var PlatformNotSupported = class extends Error {
 // src/index.ts
 var execFilePromise = (0, import_node_util.promisify)(import_node_child_process.execFile);
 var paths = {
-  "win32": "./src/mpeghdecoder/mpeghDecoder.exe"
+  "win32": "../src/mpeghdecoder/mpeghDecoder.exe"
 };
 var mpeghdecode = {
   decode: (IO, options) => __async(void 0, null, function* () {
@@ -80,5 +80,8 @@ var mpeghdecode = {
     return yield Promise.all(promises);
   })
 };
-var index_default = mpeghdecode;
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  mpeghdecode
+});
 //# sourceMappingURL=index.js.map

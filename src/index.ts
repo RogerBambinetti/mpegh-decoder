@@ -5,7 +5,7 @@ import { PlatformNotSupported } from './error/Errors';
 const execFilePromise = promisify(execFile);
 
 const paths: { [key: string]: string } = {
-    'win32': './src/mpeghdecoder/mpeghDecoder.exe'
+    'win32': '../src/mpeghdecoder/mpeghDecoder.exe'
 };
 
 interface IO {
@@ -17,7 +17,7 @@ interface Options {
     cicp?: string;
 }
 
-const mpeghdecode = {
+export const mpeghdecode = {
     decode: async (IO: IO, options?: Options): Promise<string> => {
         try {
 
@@ -44,5 +44,3 @@ const mpeghdecode = {
         return await Promise.all(promises);
     }
 };
-
-export default mpeghdecode;
