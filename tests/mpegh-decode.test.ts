@@ -1,1 +1,0 @@
-import mpeghdecode from "../src";
