@@ -17,7 +17,7 @@ interface Options {
     cicp?: string;
 }
 
-export const mpeghdecode = {
+const mpeghdecode = {
     decode: async (IO: IO, options?: Options): Promise<string> => {
         try {
 
@@ -44,3 +44,5 @@ export const mpeghdecode = {
         return await Promise.all(promises);
     }
 };
+
+export { mpeghdecode };
