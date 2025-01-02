@@ -1,8 +1,8 @@
-import mpeghdecoder from "../src";
+import mpegh-decoder from "../src";
 import fs from 'fs';
 import path from 'path';
 
-describe("mpeghdecoder tests", async () => {
+describe("mpegh-decoder tests", async () => {
     test("should bulk decode multiple files", async () => {
         const files: string[] = fs.readdirSync('./files');
 
@@ -11,7 +11,7 @@ describe("mpeghdecoder tests", async () => {
             output: `./output/${file.replace(path.extname(file), '.wav')}`
         }));
 
-        await mpeghdecoder.bulkDecode(test);
+        await mpegh - decoder.bulkDecode(test);
 
         console.log('Terminou');
     });

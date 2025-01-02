@@ -57,7 +57,7 @@ var PlatformNotSupported = class extends Error {
 // src/index.ts
 var execFilePromise = (0, import_node_util.promisify)(import_node_child_process.execFile);
 var paths = {
-  "win32": "../src/mpeghdecoder/mpeghDecoder.exe"
+  "win32": "../src/mpegh-decoder/mpeghDecoder.exe"
 };
 var mpeghDecoder = {
   decode: function(IO, options) {

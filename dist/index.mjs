@@ -48,7 +48,7 @@ var require_index = __commonJS({
     init_Errors();
     var execFilePromise = promisify(execFile);
     var paths = {
-      "win32": "../src/mpeghdecoder/mpeghDecoder.exe"
+      "win32": "../src/mpegh-decoder/mpeghDecoder.exe"
     };
     var mpeghDecoder = {
       decode: function(IO, options) {

@@ -15,7 +15,7 @@ interface Options {
 }
 
 const paths: { [key: string]: string } = {
-    'win32': '../src/mpeghdecoder/mpeghDecoder.exe'
+    'win32': '../src/mpegh-decoder/mpeghDecoder.exe'
 };
 
 const mpeghDecoder = {
