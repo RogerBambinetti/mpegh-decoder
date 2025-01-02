@@ -19,7 +19,7 @@ npm install mpegh-decoder
 ```javascript
 const mpeghDecoder = require('mpegh-decoder');
 
-const decodedFilePath = await mpeghDecoder.decode({input: "path/to/input.m4a"}, {cicp: 6});
+mpeghDecoder.decode({input: "path/to/input.m4a"}, {cicp: 6});
 ```
 
 ## Options
