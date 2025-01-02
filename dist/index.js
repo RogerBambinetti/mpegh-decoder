@@ -33,11 +33,14 @@ var PlatformNotSupported = class extends Error {
 
 // src/index.ts
 var execFilePromise = (0, import_node_util.promisify)(import_node_child_process.execFile);
-var _MpeghDecoder = class _MpeghDecoder {
-  static decode(IO, options) {
+var paths = {
+  "win32": "../src/mpeghdecoder/mpeghDecoder.exe"
+};
+var mpeghDecoder = {
+  decode: function(IO, options) {
     return __async(this, null, function* () {
       try {
-        if (!_MpeghDecoder.paths[process.platform]) {
+        if (!paths[process.platform]) {
           throw new PlatformNotSupported();
         }
         const args = ["-if", IO.input, "-of", IO.output];
@@ -45,23 +48,19 @@ var _MpeghDecoder = class _MpeghDecoder {
           args.push("-tl");
           args.push(options.cicp);
         }
-        const { stdout } = yield execFilePromise(_MpeghDecoder.paths[process.platform], args);
+        const { stdout } = yield execFilePromise(paths[process.platform], args);
         return stdout;
       } catch (error) {
         throw error;
       }
     });
-  }
-  static bulkDecode(IO, options) {
+  },
+  bulkDecode: function(IO, options) {
     return __async(this, null, function* () {
-      const promises = IO.map((io) => _MpeghDecoder.decode(io, options));
+      const promises = IO.map((io) => mpeghDecoder.decode(io, options));
       return yield Promise.all(promises);
     });
   }
 };
-_MpeghDecoder.paths = {
-  "win32": "../src/mpeghdecoder/mpeghDecoder.exe"
-};
-var MpeghDecoder = _MpeghDecoder;
-module.exports = MpeghDecoder;
+module.exports = mpeghDecoder;
 //# sourceMappingURL=index.js.map
