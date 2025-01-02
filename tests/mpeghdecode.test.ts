@@ -1,4 +1,4 @@
-import mpegh-decoder from "../src";
+import mpeghdecoder from "../src";
 import fs from 'fs';
 import path from 'path';
 
@@ -11,7 +11,7 @@ describe("mpegh-decoder tests", async () => {
             output: `./output/${file.replace(path.extname(file), '.wav')}`
         }));
 
-        await mpegh - decoder.bulkDecode(test);
+        await mpeghdecoder.bulkDecode(test);
 
         console.log('Terminou');
     });
