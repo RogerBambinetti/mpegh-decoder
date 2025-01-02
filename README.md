@@ -6,21 +6,23 @@ mpegh-decoder is a javascript wrapper for decoding MPEG-H 3D Audio into WAV file
 
 ## Installation
 
+Using npm: 
+
 ```bash
 npm install mpegh-decoder
 ```
 
-## Usage
+## Getting started
 
 ```javascript
 const mpeghDecoder = require('mpegh-decoder');
 
-await mpeghDecoder.decode({input: "path/to/input.m4a"}, {cicp: 6});
+const decodedFilePath = await mpeghDecoder.decode({input: "path/to/input.m4a"}, {cicp: 6});
 ```
 
 ## Options
 
-* `cicp` – |Target layout for decoding
+* `cicp` – CICP index of the desired target layout (default: 6)
 
 ## License
 
