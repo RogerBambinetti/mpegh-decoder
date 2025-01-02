@@ -27,7 +27,7 @@ function validateIO(IO: IO) {
         throw new InvalidInput();
     }
 
-    IO.output = IO.output ?? IO.input.replace(path.extname(IO.input), '.wav');
+    IO.output = IO.output || IO.input.replace(path.extname(IO.input), '.wav');
 
     if (!IO.output.endsWith('.wav')) {
         throw new InvalidOutput();
@@ -39,16 +39,16 @@ const mpeghDecoder = {
         try {
             validateIO(IO);
 
-            const args = ['-if', IO.input, '-of', IO.output];
+            const args = ['-if', IO.input, '-of', IO.output as string];
 
             if (options?.cicp) {
                 args.push('-tl');
                 args.push(options.cicp);
             }
 
-            const { stdout } = await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
+            await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
 
-            return stdout;
+            return path.resolve(__dirname, IO.output as string);
         } catch (error) {
             throw error;
         }

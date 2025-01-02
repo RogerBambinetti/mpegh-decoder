@@ -27,13 +27,23 @@ var __async = (__this, __arguments, generator) => {
 };
 
 // src/error/Errors.ts
-var PlatformNotSupported;
+var PlatformNotSupported, InvalidInput, InvalidOutput;
 var init_Errors = __esm({
   "src/error/Errors.ts"() {
     "use strict";
     PlatformNotSupported = class extends Error {
       constructor() {
         super("Platform not supported");
+      }
+    };
+    InvalidInput = class extends Error {
+      constructor() {
+        super("Invalid input path");
+      }
+    };
+    InvalidOutput = class extends Error {
+      constructor() {
+        super("Invalid output path");
       }
     };
   }
@@ -50,23 +60,30 @@ var require_index = __commonJS({
     var paths = {
       "win32": "../src/mpegh-decoder/mpeghDecoder.exe"
     };
+    function validateIO(IO) {
+      if (!paths[process.platform]) {
+        throw new PlatformNotSupported();
+      }
+      if (!path.extname(IO.input)) {
+        throw new InvalidInput();
+      }
+      IO.output = IO.output || IO.input.replace(path.extname(IO.input), ".wav");
+      if (!IO.output.endsWith(".wav")) {
+        throw new InvalidOutput();
+      }
+    }
     var mpeghDecoder = {
       decode: function(IO, options) {
         return __async(this, null, function* () {
           try {
-            if (!paths[process.platform]) {
-              throw new PlatformNotSupported();
-            }
-            if (!IO.output) {
-              IO.output = IO.input.replace(path.extname(IO.input), ".wav");
-            }
+            validateIO(IO);
             const args = ["-if", IO.input, "-of", IO.output];
             if (options == null ? void 0 : options.cicp) {
               args.push("-tl");
               args.push(options.cicp);
             }
-            const { stdout } = yield execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
-            return stdout;
+            yield execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
+            return path.resolve(__dirname, IO.output);
           } catch (error) {
             throw error;
           }

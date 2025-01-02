@@ -1,6 +1,6 @@
 {
   "name": "mpegh-decoder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -16,7 +16,13 @@
     "build": "tsup",
     "test": "jest"
   },
-  "keywords": [],
+  "keywords": [
+    "mpegh",
+    "decoder",
+    "audio",
+    "immersive",
+    "3D audio"
+  ],
   "author": "",
   "license": "ISC",
   "description": "",

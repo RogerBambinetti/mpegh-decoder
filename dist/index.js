@@ -53,29 +53,46 @@ var PlatformNotSupported = class extends Error {
     super("Platform not supported");
   }
 };
+var InvalidInput = class extends Error {
+  constructor() {
+    super("Invalid input path");
+  }
+};
+var InvalidOutput = class extends Error {
+  constructor() {
+    super("Invalid output path");
+  }
+};
 
 // src/index.ts
 var execFilePromise = (0, import_node_util.promisify)(import_node_child_process.execFile);
 var paths = {
   "win32": "../src/mpegh-decoder/mpeghDecoder.exe"
 };
+function validateIO(IO) {
+  if (!paths[process.platform]) {
+    throw new PlatformNotSupported();
+  }
+  if (!import_node_path.default.extname(IO.input)) {
+    throw new InvalidInput();
+  }
+  IO.output = IO.output || IO.input.replace(import_node_path.default.extname(IO.input), ".wav");
+  if (!IO.output.endsWith(".wav")) {
+    throw new InvalidOutput();
+  }
+}
 var mpeghDecoder = {
   decode: function(IO, options) {
     return __async(this, null, function* () {
       try {
-        if (!paths[process.platform]) {
-          throw new PlatformNotSupported();
-        }
-        if (!IO.output) {
-          IO.output = IO.input.replace(import_node_path.default.extname(IO.input), ".wav");
-        }
+        validateIO(IO);
         const args = ["-if", IO.input, "-of", IO.output];
         if (options == null ? void 0 : options.cicp) {
           args.push("-tl");
           args.push(options.cicp);
         }
-        const { stdout } = yield execFilePromise(import_node_path.default.resolve(__dirname, paths[process.platform]), args);
-        return stdout;
+        yield execFilePromise(import_node_path.default.resolve(__dirname, paths[process.platform]), args);
+        return import_node_path.default.resolve(__dirname, IO.output);
       } catch (error) {
         throw error;
       }
