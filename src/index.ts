@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { InvalidOutput, PlatformNotSupported } from './error/Errors';
+import { InvalidInput, InvalidOutput, PlatformNotSupported } from './error/Errors';
 
 const execFilePromise = promisify(execFile);
 
@@ -18,18 +18,26 @@ const paths: { [key: string]: string } = {
     'win32': '../src/mpegh-decoder/mpeghDecoder.exe'
 };
 
+function validateIO(IO: IO) {
+    if (!paths[process.platform]) {
+        throw new PlatformNotSupported();
+    }
+
+    if (!path.extname(IO.input)) {
+        throw new InvalidInput();
+    }
+
+    IO.output = IO.output ?? IO.input.replace(path.extname(IO.input), '.wav');
+
+    if (!IO.output.endsWith('.wav')) {
+        throw new InvalidOutput();
+    }
+}
+
 const mpeghDecoder = {
     decode: async function (IO: IO, options?: Options) {
         try {
-            if (!paths[process.platform]) {
-                throw new PlatformNotSupported();
-            }
-
-            IO.output = IO.output ?? IO.input.replace(path.extname(IO.input), '.wav');
-
-            if (!IO.output.endsWith('.wav')) {
-                throw new InvalidOutput();
-            }
+            validateIO(IO);
 
             const args = ['-if', IO.input, '-of', IO.output];
 
