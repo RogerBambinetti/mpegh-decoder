@@ -1,9 +1,13 @@
 {
   "name": "mpegh-decoder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RogerBambinetti/mpegh-decoder"
+  },
   "files": [
     "dist",
     "src",
@@ -17,11 +21,12 @@
     "test": "jest"
   },
   "keywords": [
-    "mpegh",
-    "decoder",
+    "MPEG-H",
     "audio",
-    "immersive",
-    "3D audio"
+    "decoder",
+    "3D audio",
+    "multichannel",
+    "surround"
   ],
   "author": "",
   "license": "ISC",
