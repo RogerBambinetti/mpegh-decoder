@@ -4,10 +4,6 @@ import { PlatformNotSupported } from './error/Errors';
 
 const execFilePromise = promisify(execFile);
 
-const paths: { [key: string]: string } = {
-    'win32': '../src/mpeghdecoder/mpeghDecoder.exe'
-};
-
 interface IO {
     input: string;
     output: string;
@@ -17,11 +13,14 @@ interface Options {
     cicp?: string;
 }
 
-const mpeghdecode = {
-    decode: async (IO: IO, options?: Options): Promise<string> => {
-        try {
+class MpeghDecoder {
+    private static paths: { [key: string]: string } = {
+        'win32': '../src/mpeghdecoder/mpeghDecoder.exe'
+    };
 
-            if (!paths[process.platform]) {
+    static async decode(IO: IO, options?: Options): Promise<string> {
+        try {
+            if (!MpeghDecoder.paths[process.platform]) {
                 throw new PlatformNotSupported();
             }
 
@@ -32,17 +31,18 @@ const mpeghdecode = {
                 args.push(options.cicp);
             }
 
-            const { stdout } = await execFilePromise(paths[process.platform], args);
+            const { stdout } = await execFilePromise(MpeghDecoder.paths[process.platform], args);
 
             return stdout;
         } catch (error) {
             throw error;
         }
-    },
-    bulkDecode: async (IO: IO[], options?: Options): Promise<string[]> => {
-        const promises: Promise<string>[] = IO.map(io => mpeghdecode.decode(io, options));
+    }
+
+    static async bulkDecode(IO: IO[], options?: Options): Promise<string[]> {
+        const promises: Promise<string>[] = IO.map(io => MpeghDecoder.decode(io, options));
         return await Promise.all(promises);
     }
-};
+}
 
-export { mpeghdecode };
+module.exports = MpeghDecoder;

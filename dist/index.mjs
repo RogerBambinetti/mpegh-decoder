@@ -1,3 +1,10 @@
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -19,45 +26,58 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
+// src/error/Errors.ts
+var PlatformNotSupported;
+var init_Errors = __esm({
+  "src/error/Errors.ts"() {
+    "use strict";
+    PlatformNotSupported = class extends Error {
+      constructor() {
+        super("Platform not supported");
+      }
+    };
+  }
+});
+
 // src/index.ts
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-
-// src/error/Errors.ts
-var PlatformNotSupported = class extends Error {
-  constructor() {
-    super("Platform not supported");
+var require_index = __commonJS({
+  "src/index.ts"(exports, module) {
+    init_Errors();
+    var execFilePromise = promisify(execFile);
+    var _MpeghDecoder = class _MpeghDecoder {
+      static decode(IO, options) {
+        return __async(this, null, function* () {
+          try {
+            if (!_MpeghDecoder.paths[process.platform]) {
+              throw new PlatformNotSupported();
+            }
+            const args = ["-if", IO.input, "-of", IO.output];
+            if (options == null ? void 0 : options.cicp) {
+              args.push("-tl");
+              args.push(options.cicp);
+            }
+            const { stdout } = yield execFilePromise(_MpeghDecoder.paths[process.platform], args);
+            return stdout;
+          } catch (error) {
+            throw error;
+          }
+        });
+      }
+      static bulkDecode(IO, options) {
+        return __async(this, null, function* () {
+          const promises = IO.map((io) => _MpeghDecoder.decode(io, options));
+          return yield Promise.all(promises);
+        });
+      }
+    };
+    _MpeghDecoder.paths = {
+      "win32": "../src/mpeghdecoder/mpeghDecoder.exe"
+    };
+    var MpeghDecoder = _MpeghDecoder;
+    module.exports = MpeghDecoder;
   }
-};
-
-// src/index.ts
-var execFilePromise = promisify(execFile);
-var paths = {
-  "win32": "../src/mpeghdecoder/mpeghDecoder.exe"
-};
-var mpeghdecode = {
-  decode: (IO, options) => __async(void 0, null, function* () {
-    try {
-      if (!paths[process.platform]) {
-        throw new PlatformNotSupported();
-      }
-      const args = ["-if", IO.input, "-of", IO.output];
-      if (options == null ? void 0 : options.cicp) {
-        args.push("-tl");
-        args.push(options.cicp);
-      }
-      const { stdout } = yield execFilePromise(paths[process.platform], args);
-      return stdout;
-    } catch (error) {
-      throw error;
-    }
-  }),
-  bulkDecode: (IO, options) => __async(void 0, null, function* () {
-    const promises = IO.map((io) => mpeghdecode.decode(io, options));
-    return yield Promise.all(promises);
-  })
-};
-export {
-  mpeghdecode
-};
+});
+export default require_index();
 //# sourceMappingURL=index.mjs.map
