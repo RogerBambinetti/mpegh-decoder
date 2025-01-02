@@ -2,7 +2,7 @@
 
 [![Downloads](https://img.shields.io/npm/dt/mpegh-decoder.svg)](https://www.npmjs.com/package/mpegh-decoder)
 
-mpegh-decoder is a javascript wrapper for decoding MPEG-H 3D Audio into WAV files
+mpegh-decoder is a JavaScript wrapper for decoding MPEG-H 3D Audio into WAV files using Fraunhofer's [mpeghdec](https://github.com/Fraunhofer-IIS/mpeghdec).
 
 ## Installation
 
