@@ -1,5 +1,6 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { PlatformNotSupported } from './error/Errors';
 
 const execFilePromise = promisify(execFile);
 
@@ -19,6 +20,11 @@ interface Options {
 const mpeghdecode = {
     decode: async (IO: IO, options?: Options): Promise<string> => {
         try {
+
+            if (!paths[process.platform]) {
+                throw new PlatformNotSupported();
+            }
+
             const args = ['-if', IO.input, '-of', IO.output];
 
             if (options?.cicp) {
@@ -30,7 +36,6 @@ const mpeghdecode = {
 
             return stdout;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     },
