@@ -5,7 +5,7 @@ import { PlatformNotSupported } from './error/Errors';
 const execFilePromise = promisify(execFile);
 
 const paths: { [key: string]: string } = {
-    'win32': '../src/mpeghdecoder/mpeghDecoder.exe'
+    'win32': './src/mpeghdecoder/mpeghDecoder.exe'
 };
 
 interface IO {
