@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { PlatformNotSupported } from './error/Errors';
+import { InvalidOutput, PlatformNotSupported } from './error/Errors';
 
 const execFilePromise = promisify(execFile);
 
@@ -25,8 +25,10 @@ const mpeghDecoder = {
                 throw new PlatformNotSupported();
             }
 
-            if (!IO.output) {
-                IO.output = IO.input.replace(path.extname(IO.input), '.wav');
+            IO.output = IO.output ?? IO.input.replace(path.extname(IO.input), '.wav');
+
+            if (!IO.output.endsWith('.wav')) {
+                throw new InvalidOutput();
             }
 
             const args = ['-if', IO.input, '-of', IO.output];

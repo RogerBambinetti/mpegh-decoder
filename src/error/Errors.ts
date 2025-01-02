@@ -4,8 +4,14 @@ export class PlatformNotSupported extends Error {
     }
 }
 
-export class InvalidOption extends Error {
+export class InvalidInput extends Error {
     constructor() {
-        super('Invalid option');
+        super('Invalid input path');
+    }
+}
+
+export class InvalidOutput extends Error {
+    constructor() {
+        super('Invalid output path');
     }
 }
