@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import callsites from 'callsites';
 import { InvalidInput, InvalidOutput, PlatformNotSupported } from './error/Errors';
 
 const execFilePromise = promisify(execFile);
@@ -49,9 +48,7 @@ const mpeghDecoder = {
 
             await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
 
-            const parentDirname = path.dirname(callsites()[0].getFileName() as string);
-
-            return path.resolve(parentDirname, IO.output as string);
+            return path.resolve(__dirname, IO.output as string);
         } catch (error) {
             throw error;
         }
