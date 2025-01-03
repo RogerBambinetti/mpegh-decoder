@@ -46,6 +46,7 @@ var __async = (__this, __arguments, generator) => {
 var import_node_path = __toESM(require("path"));
 var import_node_child_process = require("child_process");
 var import_node_util = require("util");
+var import_callsites = __toESM(require("callsites"));
 
 // src/error/Errors.ts
 var PlatformNotSupported = class extends Error {
@@ -92,7 +93,8 @@ var mpeghDecoder = {
           args.push(options.cicp);
         }
         yield execFilePromise(import_node_path.default.resolve(__dirname, paths[process.platform]), args);
-        return import_node_path.default.resolve(__dirname, IO.output);
+        const parentDirname = import_node_path.default.dirname((0, import_callsites.default)()[0].getFileName());
+        return import_node_path.default.resolve(parentDirname, IO.output);
       } catch (error) {
         throw error;
       }

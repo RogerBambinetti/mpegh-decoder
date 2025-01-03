@@ -53,6 +53,7 @@ var init_Errors = __esm({
 import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import callsites from "callsites";
 var require_index = __commonJS({
   "src/index.ts"(exports, module) {
     init_Errors();
@@ -83,7 +84,8 @@ var require_index = __commonJS({
               args.push(options.cicp);
             }
             yield execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
-            return path.resolve(__dirname, IO.output);
+            const parentDirname = path.dirname(callsites()[0].getFileName());
+            return path.resolve(parentDirname, IO.output);
           } catch (error) {
             throw error;
           }
