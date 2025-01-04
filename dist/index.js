@@ -101,8 +101,11 @@ function decode(IO, options) {
         args.push("-tl");
         args.push(options.cicp);
       }
-      yield execFilePromise(import_node_path.default.resolve(__dirname, paths[process.platform]), args);
-      return import_node_path.default.resolve(__dirname, IO.output);
+      const { stdout } = yield execFilePromise(import_node_path.default.resolve(__dirname, paths[process.platform]), args);
+      return {
+        outputFilePath: import_node_path.default.resolve(__dirname, IO.output),
+        stdout
+      };
     } catch (error) {
       throw error;
     }

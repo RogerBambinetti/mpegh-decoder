@@ -5,7 +5,11 @@ interface IO {
 interface Options {
     cicp?: string;
 }
-declare function decode(IO: IO, options?: Options): Promise<string>;
-declare function bulkDecode(IO: IO[], options?: Options): Promise<string[]>;
+interface DecodeResponse {
+    outputFilePath: string;
+    stdout: string;
+}
+declare function decode(IO: IO, options?: Options): Promise<DecodeResponse>;
+declare function bulkDecode(IO: IO[], options?: Options): Promise<DecodeResponse[]>;
 
 export { bulkDecode, decode };

@@ -67,8 +67,11 @@ function decode(IO, options) {
         args.push("-tl");
         args.push(options.cicp);
       }
-      yield execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
-      return path.resolve(__dirname, IO.output);
+      const { stdout } = yield execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
+      return {
+        outputFilePath: path.resolve(__dirname, IO.output),
+        stdout
+      };
     } catch (error) {
       throw error;
     }

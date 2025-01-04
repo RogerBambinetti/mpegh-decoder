@@ -14,6 +14,11 @@ interface Options {
     cicp?: string;
 }
 
+interface DecodeResponse {
+    outputFilePath: string;
+    stdout: string;
+}
+
 const paths: { [key: string]: string } = {
     'win32': '../src/mpegh-decoder/mpeghDecoder.exe'
 };
@@ -34,7 +39,7 @@ function validateIO(IO: IO) {
     }
 }
 
-export async function decode(IO: IO, options?: Options) {
+export async function decode(IO: IO, options?: Options): Promise<DecodeResponse> {
     try {
         validateIO(IO);
 
@@ -45,15 +50,18 @@ export async function decode(IO: IO, options?: Options) {
             args.push(options.cicp);
         }
 
-        await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
+        const { stdout } = await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
 
-        return path.resolve(__dirname, IO.output as string);
+        return {
+            outputFilePath: path.resolve(__dirname, IO.output as string),
+            stdout
+        };
     } catch (error) {
         throw error;
     }
 }
 
-export async function bulkDecode(IO: IO[], options?: Options): Promise<string[]> {
-    const promises: Promise<string>[] = IO.map(io => decode(io, options));
+export async function bulkDecode(IO: IO[], options?: Options) {
+    const promises: Promise<DecodeResponse>[] = IO.map(io => decode(io, options));
     return await Promise.all(promises);
 }
