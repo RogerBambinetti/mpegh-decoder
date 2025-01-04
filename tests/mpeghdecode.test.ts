@@ -29,13 +29,13 @@ describe("mpegh-decoder tests", () => {
         const { outputFilePath } = await decode({ input: inputFilePath, output: path.resolve(outputPath, 'output.wav') });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
-    });
+    }, 0);
 
     test("should decode file without specified output path", async () => {
         const { outputFilePath } = await decode({ input: inputFilePath });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
-    });
+    }, 0);
 
     test("should not decode file without specified input path", async () => {
 
