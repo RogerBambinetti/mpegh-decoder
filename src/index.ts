@@ -34,29 +34,26 @@ function validateIO(IO: IO) {
     }
 }
 
-const mpeghDecoder = {
-    decode: async function (IO: IO, options?: Options) {
-        try {
-            validateIO(IO);
+export async function decode(IO: IO, options?: Options) {
+    try {
+        validateIO(IO);
 
-            const args = ['-if', IO.input, '-of', IO.output as string];
+        const args = ['-if', IO.input, '-of', IO.output as string];
 
-            if (options?.cicp) {
-                args.push('-tl');
-                args.push(options.cicp);
-            }
-
-            await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
-
-            return path.resolve(__dirname, IO.output as string);
-        } catch (error) {
-            throw error;
+        if (options?.cicp) {
+            args.push('-tl');
+            args.push(options.cicp);
         }
-    },
-    bulkDecode: async function (IO: IO[], options?: Options): Promise<string[]> {
-        const promises: Promise<string>[] = IO.map(io => mpeghDecoder.decode(io, options));
-        return await Promise.all(promises);
-    }
-};
 
-module.exports = mpeghDecoder;
+        await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
+
+        return path.resolve(__dirname, IO.output as string);
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function bulkDecode(IO: IO[], options?: Options): Promise<string[]> {
+    const promises: Promise<string>[] = IO.map(io => decode(io, options));
+    return await Promise.all(promises);
+}

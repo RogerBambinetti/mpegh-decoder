@@ -5,6 +5,10 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -21,6 +25,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -43,6 +48,12 @@ var __async = (__this, __arguments, generator) => {
 };
 
 // src/index.ts
+var index_exports = {};
+__export(index_exports, {
+  bulkDecode: () => bulkDecode,
+  decode: () => decode
+});
+module.exports = __toCommonJS(index_exports);
 var import_node_path = __toESM(require("path"));
 var import_node_child_process = require("child_process");
 var import_node_util = require("util");
@@ -81,29 +92,31 @@ function validateIO(IO) {
     throw new InvalidOutput();
   }
 }
-var mpeghDecoder = {
-  decode: function(IO, options) {
-    return __async(this, null, function* () {
-      try {
-        validateIO(IO);
-        const args = ["-if", IO.input, "-of", IO.output];
-        if (options == null ? void 0 : options.cicp) {
-          args.push("-tl");
-          args.push(options.cicp);
-        }
-        yield execFilePromise(import_node_path.default.resolve(__dirname, paths[process.platform]), args);
-        return import_node_path.default.resolve(__dirname, IO.output);
-      } catch (error) {
-        throw error;
+function decode(IO, options) {
+  return __async(this, null, function* () {
+    try {
+      validateIO(IO);
+      const args = ["-if", IO.input, "-of", IO.output];
+      if (options == null ? void 0 : options.cicp) {
+        args.push("-tl");
+        args.push(options.cicp);
       }
-    });
-  },
-  bulkDecode: function(IO, options) {
-    return __async(this, null, function* () {
-      const promises = IO.map((io) => mpeghDecoder.decode(io, options));
-      return yield Promise.all(promises);
-    });
-  }
-};
-module.exports = mpeghDecoder;
+      yield execFilePromise(import_node_path.default.resolve(__dirname, paths[process.platform]), args);
+      return import_node_path.default.resolve(__dirname, IO.output);
+    } catch (error) {
+      throw error;
+    }
+  });
+}
+function bulkDecode(IO, options) {
+  return __async(this, null, function* () {
+    const promises = IO.map((io) => decode(io, options));
+    return yield Promise.all(promises);
+  });
+}
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  bulkDecode,
+  decode
+});
 //# sourceMappingURL=index.js.map
