@@ -1,16 +1,16 @@
-export class PlatformNotSupported extends Error {
+export class PlatformNotSupportedError extends Error {
     constructor() {
         super('Platform not supported');
     }
 }
 
-export class InvalidInput extends Error {
+export class InvalidInputError extends Error {
     constructor() {
         super('Invalid input path');
     }
 }
 
-export class InvalidOutput extends Error {
+export class InvalidOutputError extends Error {
     constructor() {
         super('Invalid output path');
     }

@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { InvalidInput, InvalidOutput, PlatformNotSupported } from './error/Errors';
+import { InvalidInputError, InvalidOutputError, PlatformNotSupportedError } from './error/Errors';
 
 const execFilePromise = promisify(execFile);
 
@@ -25,17 +25,17 @@ const paths: { [key: string]: string } = {
 
 function validateIO(IO: IO) {
     if (!paths[process.platform]) {
-        throw new PlatformNotSupported();
+        throw new PlatformNotSupportedError();
     }
 
     if (!path.extname(IO.input)) {
-        throw new InvalidInput();
+        throw new InvalidInputError();
     }
 
     IO.output = IO.output || IO.input.replace(path.extname(IO.input), '.wav');
 
     if (!IO.output.endsWith('.wav')) {
-        throw new InvalidOutput();
+        throw new InvalidOutputError();
     }
 }
 
