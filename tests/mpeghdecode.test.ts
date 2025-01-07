@@ -4,6 +4,8 @@ import path from 'path';
 
 describe("mpegh-decoder tests", () => {
 
+    const testTimeout = 1000 * 60;
+
     const inputFilePath = './tests/sample.m4a';
     const outputPath = './tests/output';
 
@@ -18,11 +20,11 @@ describe("mpegh-decoder tests", () => {
         const { outputFilePath } = await decode({ input: inputFilePath, output: path.resolve(outputPath, 'output.wav') });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
-    }, 1000 * 60);
+    }, testTimeout);
 
     test("should decode file without specified output path", async () => {
         const { outputFilePath } = await decode({ input: inputFilePath });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
-    }, 1000 * 60);
+    }, testTimeout);
 });
