@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { InvalidInputError, InvalidOutputError, PlatformNotSupportedError } from './error/Errors';
+import { InvalidInputError, InvalidOutputError, PlatformNotSupportedError, RelativePathError } from './error/Errors';
 
 const execFilePromise = promisify(execFile);
 
@@ -37,6 +37,14 @@ function validateIO(IO: IO) {
     if (!IO.output.endsWith('.wav')) {
         throw new InvalidOutputError();
     }
+
+    if (!path.isAbsolute(IO.input)) {
+        throw new RelativePathError(IO.input);
+    }
+
+    if (!path.isAbsolute(IO.output)) {
+        throw new RelativePathError(IO.output);
+    }
 }
 
 async function decode(IO: IO, options?: Options): Promise<DecodeResponse> {
@@ -53,7 +61,7 @@ async function decode(IO: IO, options?: Options): Promise<DecodeResponse> {
         const { stdout } = await execFilePromise(path.resolve(__dirname, paths[process.platform]), args);
 
         return {
-            outputFilePath: path.resolve(__dirname, IO.output as string),
+            outputFilePath: IO.output as string,
             stdout
         };
     } catch (error) {

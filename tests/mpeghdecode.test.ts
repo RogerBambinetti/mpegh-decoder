@@ -7,23 +7,15 @@ describe("mpegh-decoder tests", () => {
     const testTimeout = 1000 * 60;
 
     const inputFilePath = './tests/sample.m4a';
-    const outputPath = './tests/output';
-
-    beforeAll(() => {
-        // Create output dir
-        if (!fs.existsSync(outputPath)) {
-            fs.mkdirSync(outputPath);
-        }
-    });
 
     test("should decode file with specified output path", async () => {
-        const { outputFilePath } = await decode({ input: inputFilePath, output: path.resolve(outputPath, 'output.wav') });
+        const { outputFilePath } = await decode({ input: path.resolve(inputFilePath), output: path.resolve('./tests/output.wav') });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
     }, testTimeout);
 
     test("should decode file without specified output path", async () => {
-        const { outputFilePath } = await decode({ input: inputFilePath });
+        const { outputFilePath } = await decode({ input: path.resolve(inputFilePath) });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
     }, testTimeout);

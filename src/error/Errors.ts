@@ -15,3 +15,9 @@ export class InvalidOutputError extends Error {
         super('Invalid output path');
     }
 }
+
+export class RelativePathError extends Error {
+    constructor(path: string) {
+        super(`Path must be absolute. Invalid path provided: ${path}`);
+    }
+}
