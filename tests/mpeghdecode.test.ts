@@ -9,36 +9,20 @@ describe("mpegh-decoder tests", () => {
 
     beforeAll(() => {
         // Create output dir
-        fs.mkdirSync(outputPath);
-    });
-
-    afterEach(() => {
-        // Remove output files generated from tests
-        fs.rmSync(outputPath, { recursive: true });
-
-        // Recreate output dir
-        fs.mkdirSync(outputPath);
-    });
-
-    afterAll(() => {
-        // Remove output files generated from tests
-        fs.rmSync(outputPath, { recursive: true });
+        if (!fs.existsSync(outputPath)) {
+            fs.mkdirSync(outputPath);
+        }
     });
 
     test("should decode file with specified output path", async () => {
         const { outputFilePath } = await decode({ input: inputFilePath, output: path.resolve(outputPath, 'output.wav') });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
-    }, 0);
+    }, 1000 * 60);
 
     test("should decode file without specified output path", async () => {
         const { outputFilePath } = await decode({ input: inputFilePath });
 
         expect(fs.existsSync(outputFilePath)).toBe(true);
-    }, 0);
-
-    test("should not decode file without specified input path", async () => {
-
-    });
-
+    }, 1000 * 60);
 });
