@@ -39,7 +39,7 @@ function validateIO(IO: IO) {
     }
 }
 
-export async function decode(IO: IO, options?: Options): Promise<DecodeResponse> {
+async function decode(IO: IO, options?: Options): Promise<DecodeResponse> {
     try {
         validateIO(IO);
 
@@ -61,7 +61,9 @@ export async function decode(IO: IO, options?: Options): Promise<DecodeResponse>
     }
 }
 
-export async function bulkDecode(IO: IO[], options?: Options) {
+async function bulkDecode(IO: IO[], options?: Options) {
     const promises: Promise<DecodeResponse>[] = IO.map(io => decode(io, options));
     return await Promise.all(promises);
 }
+
+export { bulkDecode, decode };
